@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <title>Nuevo editorial</title>
+   
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+          <h3>Nuevo editorial</h3>
+        </div>
+        <div class="row">
+          <div class=" col-md-7">
+      
+            <form role="form" action="http://localhost:8000/api/editoriales" method="POST">
+              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+      
+              <div class="form-group">
+                <label for="codigo">Codigo del editorial:</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="codigo_editorial" id="codigo_editorial" value="" placeholder="Ingresa el codigo del editorial">
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nombre">Nombre del editorial:</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="nombre_editorial" id="nombre_editorial" placeholder="Ingresa el nombre del editorial">
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="contacto">Contacto:</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="contacto" name="contacto" placeholder="Ingresa el nombre del contacto">
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="telefono">Telefono:</label>
+                <div class="input-group">
+                  <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Ingresa el telefono del contacto">
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                </div>
+              </div>
+              <input type="submit" class="btn btn-info" value="Guardar" name="Guardar">
+              <a class="btn btn-danger" href="./index.html">Cancelar</a>
+            </form>
+            <script>
+                // Get the form
+                const form = document.querySelector('form');
+            
+                // Add an event listener for form submission
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault(); // prevent the default form submission behavior
+                    const url = 'http://localhost:8000/api/editoriales';
+                    const formData = new FormData(form);
+                    fetch(url, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Editorial creado correctamente');
+                            window.location.href = './index.html'; // redirect to index.html on success
+                        } else {
+                            alert('Ocurrió un error al crear el editorial');
+                        }
+                    })
+                    .catch(error => console.log(error));
+                });
+            </script>
+            
+          </div>
+        </div>
+      </div>
+      
+
+</body>
+</html>
+        

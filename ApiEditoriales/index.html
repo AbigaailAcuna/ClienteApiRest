@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <title>Cliente Api</title>
+
+    <style>
+      body{
+        background-color: cornflowerblue;
+      }
+      table thead {
+            background:#302b63;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+    <h2 class="text-center">Editoriales</h2>
+  <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">
+<a class="btn btn-primary" href="agregar.html"><i class="bi bi-file-earmark-plus" ></i></a>
+
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>codigo_editorial</th>
+          <th>nombre_editorial</th>
+          <th>contacto</th>
+          <th>telefono</th>
+          <th>Opciones</th>
+          
+          
+        </tr>
+      </thead>
+      <tbody id="data">
+      </tbody>
+    </table>
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+
+    <script>
+      // Fetch data from API endpoint and render table rows
+      const url = 'http://localhost:8000/api/editoriales';
+      fetch(url)
+        .then(response => response.json())
+        .then(data => mostrarData(data))
+        .catch(error => console.log(error));
+    
+      const mostrarData = (data) => {
+        let body = "";
+        for (let i = 0; i < data.length; i++) {      
+          body += `<tr data-codigo="${data[i].codigo_editorial}">
+            <td>${data[i].codigo_editorial}</td>
+            <td>${data[i].nombre_editorial}</td>
+            <td>${data[i].contacto}</td>
+            <td>${data[i].telefono}</td>
+            <td>
+              <a class="btn btn-success" href="editar.html?codigo_editorial=${data[i].codigo_editorial}"><i class="bi bi-pencil"></i></a>
+              <a class="btn btn-danger" onclick="eliminar('${data[i].codigo_editorial}')">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>`
+        }
+        document.getElementById('data').innerHTML = body
+      }
+    
+      // Delete data by sending DELETE request to API endpoint
+      function eliminar(codigo_editorial) {
+  const url = `http://localhost:8000/api/editoriales/${codigo_editorial}`;
+  console.log("Deleting row with codigo_editorial =", codigo_editorial);
+  fetch(url, {
+    method: 'DELETE',
+  })
+  .then(res => {
+    console.log("Response:", res);
+    // Remove the row from the table if the deletion was successful
+    const row = document.querySelector(`tr[data-codigo="${codigo_editorial}"]`);
+    if (row) {
+      row.remove();
+      console.log("Row deleted from table");
+    }
+  })
+  .catch(error => console.log(error));
+}
+
+    </script>
+</html>
